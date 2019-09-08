@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>mfm</title>
+</head>
+
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+function send(){
+    $.ajax({
+        type: "get",
+        url: "/getName",
+        //success:function(data)
+        complete:function(data)
+        {
+            console.log(data.responseText);
+            console.log("1234");
+	    $('#input').val(data.responseText);
+            setTimeout(function(){
+                send();
+            }, 3000);
+        }
+    });
+}
+send();
+</script>
+
+<script>
+function time() {
+    var d = new Date();
+    var s = d.getSeconds();
+    var m = d.getMinutes();
+    var h = d.getHours();
+    document.getElementById('clock').textContent = h + ":" + m + ":" + s;
+}
+setInterval(time, 1000);
+</script>
+
+<input id="input" type="text" class="Disable" value="" />
+<span id="clock"></span>
+
+</body>
+
+</html>
