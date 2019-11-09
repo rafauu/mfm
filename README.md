@@ -14,7 +14,8 @@ wget "https://raw.githubusercontent.com/Mjrovai/OpenCV-Face-Recognition/master/F
 ```
 git clone https://github.com/rafauu/mfm.git
 cd mfm
-export FLASK_APP=hello.py && flask run &
+export FLASK_APP=server.py
+flask run
 python3 validate_face_detection.py //validate if your face is detected
 python3 gather_data.py //gather your face images
 python3 trainer.py //train model on your data
