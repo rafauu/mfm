@@ -15,15 +15,10 @@ function send(){
     $.ajax({
         type: "get",
         url: "/getName",
-        //success:function(data)
         complete:function(data)
         {
-            console.log(data.responseText);
-            console.log("1234");
-	    $('#input').val(data.responseText);
-            setTimeout(function(){
-                send();
-            }, 3000);
+            document.getElementById('detectedName').textContent = data.responseText;
+            setTimeout(function(){ send(); }, 3000);
         }
     });
 }
@@ -41,7 +36,7 @@ function time() {
 setInterval(time, 1000);
 </script>
 
-<input id="input" type="text" class="Disable" value="" />
+<span id="detectedName"></span>
 <span id="clock"></span>
 
 </body>

@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os 
+import requests
+from time import sleep
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('trainer.yml')
@@ -9,7 +11,7 @@ faceCascade = cv2.CascadeClassifier(cascadePath);
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-id = 0
+#id = 0
 
 #names = ['rafau', 'X', 'Y']
 names = ['rafau']
@@ -33,22 +35,15 @@ while True:
         minSize = (int(minW), int(minH)),
        )
 
-    for(x,y,w,h) in faces:
-        cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
-        id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
+    if len(faces):
+        for(x,y,w,h) in faces:
+            cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+            id, _ = recognizer.predict(gray[y:y+h,x:x+w])
+            cv2.putText(img, names[id], (x+5,y-5), font, 1, (255,255,255), 2)
+            requests.post('http://localhost:5000/process', json={'name':names[id]})
+    else:
+        requests.post('http://localhost:5000/process', json={'name':''})
 
-        # Check if confidence is less them 100 ==> "0" is perfect match 
-        if (confidence < 100):
-            id = names[id]
-            confidence = "  {0}%".format(round(100 - confidence))
-        else:
-	    print("confidence was above 100")
-            #id = "unknown"
-            #confidence = "  {0}%".format(round(100 - confidence))
-        
-        cv2.putText(img, str(id), (x+5,y-5), font, 1, (255,255,255), 2)
-        cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)  
-    
     cv2.imshow('camera',img) 
 
     k = cv2.waitKey(10) & 0xff # Press 'ESC' for exiting video

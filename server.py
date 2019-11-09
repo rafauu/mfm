@@ -12,13 +12,14 @@ def index():
 def index2():
     global name
     name = request.get_json()['name']
+    print(name)
     return ""
 
 @app.route('/getName')
 def index3():
     global name
     print(name)
-    name = name + "1"
+    #name = name + "1"
     return name
 
 if __name__ == '__main__':
