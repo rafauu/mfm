@@ -8,8 +8,6 @@
 
 <body bgcolor="black">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
 <script>
 function hideAllDivs(){
     var divs = document.getElementsByTagName('div');
@@ -25,38 +23,33 @@ function showAllDivs(){
     }
 }
 
-function send(){
-    $.ajax({
-        type: "get",
-        url: "/getName",
-        complete:function(data)
-        {
-	    if(data.responseText) {
-		document.getElementById('detectedName').textContent = "Hi " + data.responseText;
-		showAllDivs();
-		setTimeout(function(){ send(); }, 4000);
-	    }
-	    else {
-		document.getElementById('detectedName').textContent = data.responseText;
-		hideAllDivs();
-		setTimeout(function(){ send(); }, 100);
-	    }
-        }
-    });
+function send() {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/getName', true);
+    request.onload = function() {
+	if(this.response) {
+	    document.getElementById('detectedName').textContent = "Hi " + this.response;
+	    showAllDivs();
+	    setTimeout(function(){ send(); }, 4000);
+	}
+	else {
+	    hideAllDivs();
+	    setTimeout(function(){ send(); }, 100);
+	}
+    }
+    request.send();
 }
 send();
-</script>
 
-<script>
 function checkTime(i) {
-  if (i < 10) {i = "0" + i};
-  return i;
+    return i<10 ? "0"+i : i;
 }
 function time() {
     var d = new Date();
     var h = d.getHours();
     var m = checkTime(d.getMinutes());
     document.getElementById('clock').textContent = h + ":" + m;
+
     var date = d.toString().split(' ').splice(1,3).join(' ');
     document.getElementById('date').textContent = date;
 }
