@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-name = "first"
+name = ""
 
 @app.route('/')
 def index():
@@ -19,7 +19,6 @@ def index2():
 def index3():
     global name
     print(name)
-    #name = name + "1"
     return name
 
 if __name__ == '__main__':

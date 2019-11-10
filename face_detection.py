@@ -11,10 +11,7 @@ faceCascade = cv2.CascadeClassifier(cascadePath);
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-#id = 0
-
-#names = ['rafau', 'X', 'Y']
-names = ['rafau']
+names = ['Rafau1', 'Rafau2']
 
 cam = cv2.VideoCapture(0)
 cam.set(3, 640) # set video widht
@@ -25,7 +22,7 @@ minW = 0.1*cam.get(3)
 minH = 0.1*cam.get(4)
 
 while True:
-    ret, img =cam.read()
+    ret, img = cam.read()
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     
     faces = faceCascade.detectMultiScale( 

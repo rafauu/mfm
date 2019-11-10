@@ -6,19 +6,41 @@
     <title>mfm</title>
 </head>
 
-<body>
+<body bgcolor="black">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <script>
+function hideAllDivs(){
+    var divs = document.getElementsByTagName('div');
+    for(var i = 0; i < divs.length; i++) {
+        divs[i].style.display = "none";
+    }
+}
+
+function showAllDivs(){
+    var divs = document.getElementsByTagName('div');
+    for(var i = 0; i < divs.length; i++) {
+        divs[i].style.display = "block";
+    }
+}
+
 function send(){
     $.ajax({
         type: "get",
         url: "/getName",
         complete:function(data)
         {
-            document.getElementById('detectedName').textContent = data.responseText;
-            setTimeout(function(){ send(); }, 3000);
+	    if(data.responseText) {
+		document.getElementById('detectedName').textContent = "Hi " + data.responseText;
+		showAllDivs();
+		setTimeout(function(){ send(); }, 4000);
+	    }
+	    else {
+		document.getElementById('detectedName').textContent = data.responseText;
+		hideAllDivs();
+		setTimeout(function(){ send(); }, 100);
+	    }
         }
     });
 }
@@ -26,18 +48,55 @@ send();
 </script>
 
 <script>
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};
+  return i;
+}
 function time() {
     var d = new Date();
-    var s = d.getSeconds();
-    var m = d.getMinutes();
     var h = d.getHours();
-    document.getElementById('clock').textContent = h + ":" + m + ":" + s;
+    var m = checkTime(d.getMinutes());
+    document.getElementById('clock').textContent = h + ":" + m;
+    var date = d.toString().split(' ').splice(1,3).join(' ');
+    document.getElementById('date').textContent = date;
 }
 setInterval(time, 1000);
 </script>
 
-<span id="detectedName"></span>
-<span id="clock"></span>
+<style>
+.dateStyle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 40px;
+  color: #675F5F;
+  font-family: 'Roboto', sans-serif;
+}
+
+.clockStyle {
+  position: absolute;
+  top: 56px;
+  left: 16px;
+  font-size: 40px;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.nameStyle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  //font-variant: small-caps;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+</style>
+
+<div id="date" class="dateStyle"></div>
+<div id="clock" class="clockStyle"></div>
+<div id="detectedName" class="nameStyle"></div>
 
 </body>
 
